@@ -1,10 +1,11 @@
 import { useState, createContext } from "react";
 import Button from "./Buttons";
-import Modal from "react-bootstrap/Modal";
+import { Modal } from "react-bootstrap";
 import { Step1, Step2, Step3 } from "./Steps";
 import { logo } from "../assets";
 
 export const ChoicesContext = createContext();
+
 const Popup = () => {
   const [step, setStepState] = useState(0);
   const steps = [Step1, Step2, Step3];
@@ -12,12 +13,26 @@ const Popup = () => {
 
   function inc() {
     setStepState((curr) => {
+      if (choices.length > 0) {
+        if (curr >= steps.length - 1) {
+          alert(choices);
+          return curr;
+        }
+        return curr + 1;
+      } else {
+        return curr;
+      }
+    });
+  }
+  function skip() {
+    setStepState((curr) => {
       if (curr >= steps.length - 1) {
         return curr;
       }
       return curr + 1;
     });
   }
+
   function dec() {
     setStepState((curr) => {
       if (curr <= 0) {
@@ -36,7 +51,19 @@ const Popup = () => {
       newChoices.splice(index, 1);
       setChoices(newChoices);
     }
-    console.log(choices);
+  }
+
+  function handleRadioChange(event) {
+    const newChoices = [...choices];
+    choices.map((e) => {
+      if (["Every month", "Every week", "Everyday"].includes(e)) {
+        const index = newChoices.indexOf(e);
+        newChoices.splice(index, 1);
+        setChoices(newChoices);
+      } 
+        setChoices(prev=> [...prev, event.target.value]);
+        return true
+    });
   }
 
   const stepDisplay = () => {
@@ -44,7 +71,7 @@ const Popup = () => {
       case 0:
         return <Step1 handleChange={handleChange} />;
       case 1:
-        return <Step2 handleChange={handleChange} />;
+        return <Step2 handleRadioChange={handleRadioChange} />;
       case 2:
         return <Step3 handleChange={handleChange} />;
       default:
@@ -53,54 +80,43 @@ const Popup = () => {
   };
 
   return (
-    <div className="popup-container">
+    <div>
       <div className="popup-top">
         <div className="logo">
           <img src={logo} alt="logo_speedwapp" />
         </div>
       </div>
-      <Modal show={true} size='lg'>
-        <div className="questions-container">
-          <div className="popup-middle">
-            {/* <div className="heading">
-              <h2 className="title">
-                Before you start, tell us more about yourself!
-              </h2>
-            </div> */}
-
-            <Modal.Header>
-              <Modal.Title>
-                Before you start, tell us more about yourself!
-              </Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <ChoicesContext.Provider value={choices}>
-                {stepDisplay()}
-              </ChoicesContext.Provider>
-            </Modal.Body>
-
-            <Modal.Footer>
-              <div className="btn-left">
-                <Button text={"BACK"} handleClick={dec} />
-              </div>
-              <div className="btn-right">
-                <Button text={"SKIP"} />
-                <Button text={"NEXT"} gray handleClick={inc} />
-              </div>
-            </Modal.Footer>
-
-            {/* <div className="popup-btns">
-              <div className="btn-left">
-                <Button text={"BACK"} handleClick={dec} />
-              </div>
-              <div className="btn-right">
-                <Button text={"SKIP"} />
-                <Button text={"NEXT"} gray handleClick={inc} />
-              </div>
-            </div> */}
+      <Modal show={true} size="lg" centered>
+        <Modal.Header className="flex-column-reverse align-items-start">
+          <Modal.Title className="fw-light fs-5 text mt-2">
+            Before you start, tell us more about yourself!
+          </Modal.Title>
+          <div className={`dots-container`}>
+            {steps.map((e, i) => (
+              <div
+                className={`dot ${step === i ? "dot-active" : null}`}
+                key={e}
+                onClick={() => setStepState(i)}
+              />
+            ))}
           </div>
-        </div>
+        </Modal.Header>
+
+        <Modal.Body>
+          <ChoicesContext.Provider value={choices}>
+            {stepDisplay()}
+          </ChoicesContext.Provider>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <div className="btn-left">
+            <Button text={"BACK"} handleClick={dec} />
+          </div>
+          <div className="btn-right">
+            <Button text={"SKIP"} handleClick={skip} />
+            <Button text={"NEXT"} gray={choices.length > 0} handleClick={inc} />
+          </div>
+        </Modal.Footer>
       </Modal>
     </div>
   );

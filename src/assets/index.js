@@ -1,1 +1,1 @@
-export {default as logo} from './logo_black.png'
+export {default as logo} from './logo.png'

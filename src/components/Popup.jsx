@@ -1,7 +1,8 @@
-import {useState} from "react";
+import {useState, createContext } from "react";
 import Button from "./Buttons";
 import { Step1, Step2, Step3 } from "./Steps";
 
+export const ChoicesContext = createContext()
 const Popup = () => {
     const [step, setStepState] = useState(0)
     const steps = [Step1, Step2, Step3]
@@ -26,7 +27,13 @@ const Popup = () => {
         })
     }
     function handleChange(e){
-      setChoices((prev)=> [...prev, e.target.value])
+      if(!choices.includes(e.target.value)){
+        setChoices((prev)=> [...prev, e.target.value])
+      }
+      const index = choices.indexOf(e.target.value)
+      if (index > -1) { 
+        choices.splice(index, 1);
+      }
       console.log(choices)
     }
     function handleCheck(e){
@@ -60,9 +67,9 @@ const Popup = () => {
             </h2>
           </div>
 
-          <div>
+          <ChoicesContext.Provider value={choices}>
             {stepDisplay()}
-          </div>
+          </ChoicesContext.Provider>
 
           <div className="popup-btns">
             <div className="btn-left">

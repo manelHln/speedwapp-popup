@@ -1,8 +1,8 @@
-/* body{
+body{
     background-image: url(./assets/bg.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-} */
+}
 
 
 .popup-container{
@@ -82,8 +82,10 @@
 
 .popup-btns{
     display: flex;
-    justify-content: space-between;
-    margin: 2rem 0;
+}
+
+.modal-footer{
+    justify-content: space-between !important;
 }
 
 .btn-right{

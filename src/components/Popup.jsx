@@ -12,7 +12,7 @@ const Popup = () => {
 
   function inc() {
     setStepState((curr) => {
-      if (curr > steps.length - 1) {
+      if (curr >= steps.length - 1) {
         return curr;
       }
       return curr + 1;

@@ -4,6 +4,7 @@ import { Modal } from "react-bootstrap";
 import { Step1, Step2, Step3 } from "./Steps";
 import { logo } from "../assets";
 import { ChoicesContext } from "../context/FormContext";
+import Loading from './Spinner'
 
 const Popup = () => {
   const [step, setStepState] = useState(0);
@@ -17,12 +18,11 @@ const Popup = () => {
         if (curr >= steps.length - 1) {
           postData("https://www.speedwapp.com", JSON.stringify(choices)).then(
             (data) => {
-              console.log(data);
+              alert(data);
             }
           );
           return curr;
         }
-        console.log(typeof choices);
         return curr + 1;
       } else {
         return curr;
@@ -87,7 +87,6 @@ const Popup = () => {
   }
 
   function handleRadioChange(event) {
-    debugger;
     const newChoices = [...choices];
     choices.map((e) => {
       if (["Every month", "Every week", "Everyday"].includes(e)) {
@@ -148,7 +147,7 @@ const Popup = () => {
           <div className="btn-right">
             <Button text={"SKIP"} handleClick={skip} />
             <Button
-              text={isLoading ? "...sending" : "Next"}
+              text={isLoading ? <Loading /> : "Next"}
               gray={choices.length > 0}
               handleClick={inc}
             />

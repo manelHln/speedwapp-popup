@@ -18,7 +18,7 @@ const Popup = () => {
         if (curr >= steps.length - 1) {
           postData("https://www.speedwapp.com", JSON.stringify(choices)).then(
             (data) => {
-              alert(data);
+              console.log(data);
             }
           );
           return curr;
@@ -114,7 +114,7 @@ const Popup = () => {
 
   return (
     <div>
-      <div className="popup-top">
+      <div>
         <div className="logo">
           <img src={logo} alt="logo_speedwapp" />
         </div>
@@ -144,7 +144,7 @@ const Popup = () => {
           <div className="btn-left">
             <Button text={"BACK"} handleClick={dec} />
           </div>
-          <div className="btn-right">
+          <div className="d-flex gap-2">
             <Button text={"SKIP"} handleClick={skip} />
             <Button
               text={isLoading ? <Loading /> : "Next"}

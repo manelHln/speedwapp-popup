@@ -13,7 +13,7 @@ const RadioChoice = ({ content, handleRadioChange }) => {
         value={content}
         onChange={handleRadioChange}
       />
-      <span className="choice-text">{content}</span>
+      <span className="ms-2">{content}</span>
     </label>
   );
 };

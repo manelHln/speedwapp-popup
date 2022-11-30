@@ -7,7 +7,7 @@ const ChoiceCard = ({content, handleChange}) => {
   return (
     <label className='choice-card'>
         <input type="checkbox" id={content} checked={value.includes(content)} value={content} onChange={handleChange} />
-        <span className='choice-text'>{content}</span>
+        <span className='fw-light ms-2'>{content}</span>
     </label>
   )
 }

@@ -15,8 +15,8 @@ const Popup = () => {
     setStepState((curr) => {
       if (choices.length > 0) {
         if (curr >= steps.length - 1) {
-          alert(choices);
-          return curr;
+          window.open("https://www.speedwapp.com", "_blank")
+          return curr ;
         }
         return curr + 1;
       } else {
@@ -54,17 +54,17 @@ const Popup = () => {
   }
 
   function handleRadioChange(event) {
-    debugger
+    debugger;
     const newChoices = [...choices];
     choices.map((e) => {
       if (["Every month", "Every week", "Everyday"].includes(e)) {
         const index = choices.indexOf(e);
         newChoices.splice(index, 1);
         setChoices(newChoices);
-      } 
-      return choices
+      }
+      return choices;
     });
-    setChoices(prev=> [...prev, event.target.value]);
+    setChoices((prev) => [...prev, event.target.value]);
   }
 
   const stepDisplay = () => {

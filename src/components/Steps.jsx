@@ -3,7 +3,7 @@ import ChoiceCard from "./ChoiceCard";
 import RadioChoice from "./RadioChoice";
 import questions from "../constants/data";
 
-const Step1 = ({handleChange}) => {
+const Step1 = ({ handleChange }) => {
   return (
     <>
       <p className="fw-bold fs-5 text">{questions[0].title}</p>
@@ -18,7 +18,7 @@ const Step1 = ({handleChange}) => {
   );
 };
 
-const Step2 = ({handleRadioChange, selected}) => {
+const Step2 = ({ handleRadioChange }) => {
   return (
     <>
       <p className="fw-bold fs-5 text">{questions[1].title}</p>
@@ -33,7 +33,7 @@ const Step2 = ({handleRadioChange, selected}) => {
   );
 };
 
-const Step3 = ({handleChange}) => {
+const Step3 = ({ handleChange }) => {
   return (
     <>
       <p className="fw-bold fs-5 text">{questions[2].title}</p>

@@ -54,16 +54,17 @@ const Popup = () => {
   }
 
   function handleRadioChange(event) {
+    debugger
     const newChoices = [...choices];
     choices.map((e) => {
       if (["Every month", "Every week", "Everyday"].includes(e)) {
-        const index = newChoices.indexOf(e);
+        const index = choices.indexOf(e);
         newChoices.splice(index, 1);
         setChoices(newChoices);
       } 
-        setChoices(prev=> [...prev, event.target.value]);
-        return true
+      return choices
     });
+    setChoices(prev=> [...prev, event.target.value]);
   }
 
   const stepDisplay = () => {
@@ -96,7 +97,6 @@ const Popup = () => {
               <div
                 className={`dot ${step === i ? "dot-active" : null}`}
                 key={e}
-                onClick={() => setStepState(i)}
               />
             ))}
           </div>

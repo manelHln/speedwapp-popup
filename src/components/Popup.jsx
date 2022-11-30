@@ -3,9 +3,7 @@ import Button from "./Buttons";
 import { Modal } from "react-bootstrap";
 import { Step1, Step2, Step3 } from "./Steps";
 import { logo } from "../assets";
-import  {ChoicesContext}  from "../context/FormContext";
-
-
+import { ChoicesContext } from "../context/FormContext";
 
 const Popup = () => {
   const [step, setStepState] = useState(0);
@@ -16,10 +14,14 @@ const Popup = () => {
     setStepState((curr) => {
       if (choices.length > 0) {
         if (curr >= steps.length - 1) {
-          postData('https://www.speedwapp.com', JSON.stringify(choices))
-          return curr ;
+          postData("https://www.speedwapp.com", JSON.stringify(choices)).then(
+            (data) => {
+              console.log(data);
+            }
+          );
+          return curr;
         }
-        console.log(typeof(choices))
+        console.log(typeof choices);
         return curr + 1;
       } else {
         return curr;
@@ -27,20 +29,19 @@ const Popup = () => {
     });
   }
 
-  async function postData(url = '', data = {}) {
+  async function postData(url = "", data = {}) {
     // Default options are marked with *
     const response = await fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', 
-      cache: 'no-cache', 
-      credentials: 'same-origin', 
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
       headers: {
-        'Content-Type': 'application/json'
-        
+        "Content-Type": "application/json",
       },
-      redirect: 'follow', // 
-      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
+      redirect: "follow", //
+      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
     });
     return response.json(); // parses JSON response into native JavaScript objects
   }

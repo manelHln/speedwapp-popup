@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { ChoicesContext } from "./Popup"
+import { ChoicesContext } from "../context/FormContext"
 
 const ChoiceCard = ({content, handleChange}) => {
   const value = useContext(ChoicesContext)

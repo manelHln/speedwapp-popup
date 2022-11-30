@@ -1,4 +1,3 @@
-import React from "react";
 import ChoiceCard from "./ChoiceCard";
 import RadioChoice from "./RadioChoice";
 import questions from "../constants/data";

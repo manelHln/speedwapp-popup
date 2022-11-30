@@ -1,10 +1,11 @@
-import { useState, createContext } from "react";
+import { useState } from "react";
 import Button from "./Buttons";
 import { Modal } from "react-bootstrap";
 import { Step1, Step2, Step3 } from "./Steps";
 import { logo } from "../assets";
+import  {ChoicesContext}  from "../context/FormContext";
 
-export const ChoicesContext = createContext();
+
 
 const Popup = () => {
   const [step, setStepState] = useState(0);
@@ -114,7 +115,7 @@ const Popup = () => {
           </div>
           <div className="btn-right">
             <Button text={"SKIP"} handleClick={skip} />
-            <Button text={"NEXT"} gray={choices.length > 0} handleClick={inc} />
+            <Button text={"NEXT"} gray handleClick={inc} />
           </div>
         </Modal.Footer>
       </Modal>

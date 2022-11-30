@@ -9,6 +9,7 @@ const Popup = () => {
   const [step, setStepState] = useState(0);
   const steps = [Step1, Step2, Step3];
   const [choices, setChoices] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   function inc() {
     setStepState((curr) => {
@@ -30,20 +31,30 @@ const Popup = () => {
   }
 
   async function postData(url = "", data = {}) {
+    setIsLoading(true);
     // Default options are marked with *
-    const response = await fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow", //
-      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(data), // body data type must match "Content-Type" header
-    });
-    return response.json(); // parses JSON response into native JavaScript objects
+    try {
+      const response = await fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow", //
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+    finally{
+      setIsLoading(false)
+    }
   }
 
   function skip() {
@@ -136,7 +147,11 @@ const Popup = () => {
           </div>
           <div className="btn-right">
             <Button text={"SKIP"} handleClick={skip} />
-            <Button text={"NEXT"} gray handleClick={inc} />
+            <Button
+              text={isLoading ? "...sending" : "Next"}
+              gray={choices.length > 0}
+              handleClick={inc}
+            />
           </div>
         </Modal.Footer>
       </Modal>

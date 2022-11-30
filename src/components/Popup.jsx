@@ -16,15 +16,35 @@ const Popup = () => {
     setStepState((curr) => {
       if (choices.length > 0) {
         if (curr >= steps.length - 1) {
-          window.open("https://www.speedwapp.com", "_blank")
+          postData('https://www.speedwapp.com', JSON.stringify(choices))
           return curr ;
         }
+        console.log(typeof(choices))
         return curr + 1;
       } else {
         return curr;
       }
     });
   }
+
+  async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', 
+      cache: 'no-cache', 
+      credentials: 'same-origin', 
+      headers: {
+        'Content-Type': 'application/json'
+        
+      },
+      redirect: 'follow', // 
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+  }
+
   function skip() {
     setStepState((curr) => {
       if (curr >= steps.length - 1) {

@@ -1,18 +1,37 @@
 import { useState } from "react";
-import Button from "./Buttons";
-import { Modal } from "react-bootstrap";
 import { Step1, Step2, Step3 } from "./Steps";
-import { logo } from "../assets";
-import { ChoicesContext } from "../context/FormContext";
-import Loading from './Spinner'
+
+
+
+const Button = ({text, handleClick, active}) => {
+  return (
+    <div className={`default-btn ${active&& 'active-bg'}`} onClick={handleClick}>{text}</div>
+  ) 
+}
 
 const Popup = () => {
-  const [step, setStepState] = useState(0);
   const steps = [Step1, Step2, Step3];
+  const [step, setStepState] = useState(0);
   const [choices, setChoices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  function inc() {
+
+// Spinner effect for the button when sending data
+  function Loading() {
+    return (
+      <div>
+        <span
+          class="spinner-grow spinner-grow-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        loading...
+      </div>
+    );
+  }
+
+
+  function next() {
     setStepState((curr) => {
       if (choices.length > 0) {
         if (curr >= steps.length - 1) {
@@ -30,19 +49,19 @@ const Popup = () => {
     });
   }
 
+
   async function postData(url = "", data = {}) {
     setIsLoading(true);
-    // Default options are marked with *
     try {
       const response = await fetch(url, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        method: "POST",
         mode: "cors",
         cache: "no-cache",
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
         },
-        redirect: "follow", //
+        redirect: "follow",
         referrerPolicy: "no-referrer",
         body: JSON.stringify(data),
       });
@@ -50,12 +69,12 @@ const Popup = () => {
         throw new Error(`Error! status: ${response.status}`);
       }
     } catch (error) {
-      alert(error.message)
-    }
-    finally{
-      setIsLoading(false)
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
     }
   }
+
 
   function skip() {
     setStepState((curr) => {
@@ -66,7 +85,9 @@ const Popup = () => {
     });
   }
 
-  function dec() {
+
+
+  function prev() {
     setStepState((curr) => {
       if (curr <= 0) {
         return curr;
@@ -74,7 +95,9 @@ const Popup = () => {
       return curr - 1;
     });
   }
-  function handleChange(e) {
+
+
+  function handleCheckboxChange(e) {
     if (!choices.includes(e.target.value)) {
       setChoices((prev) => [...prev, e.target.value]);
     }
@@ -85,6 +108,7 @@ const Popup = () => {
       setChoices(newChoices);
     }
   }
+
 
   function handleRadioChange(event) {
     const newChoices = [...choices];
@@ -99,31 +123,29 @@ const Popup = () => {
     setChoices((prev) => [...prev, event.target.value]);
   }
 
+
   const stepDisplay = () => {
     switch (step) {
       case 0:
-        return <Step1 handleChange={handleChange} />;
+        return <Step1 choices={choices} handleCheckboxChange={handleCheckboxChange} />;
       case 1:
-        return <Step2 handleRadioChange={handleRadioChange} />;
+        return <Step2 choices={choices} handleRadioChange={handleRadioChange} />;
       case 2:
-        return <Step3 handleChange={handleChange} />;
+        return <Step3 choices={choices} handleCheckboxChange={handleCheckboxChange} />;
       default:
-        return <Step1 handleChange={handleChange} />;
+        return <Step1 choices={choices} handleCheckboxChange={handleCheckboxChange} />;
     }
   };
 
+
+
   return (
-    <div>
-      <div>
-        <div className="logo">
-          <img src={logo} alt="logo_speedwapp" />
-        </div>
-      </div>
-      <Modal show={true} size="lg" centered>
-        <Modal.Header className="flex-column-reverse align-items-start">
-          <Modal.Title className="fw-light fs-5 text mt-2">
+    <div className="d-flex justify-content-center">
+      <div className="card col-8">
+        <div className="card-header flex-column-reverse align-items-start">
+          <div className="card-title fw-light fs-5 text mt-2">
             Before you start, tell us more about yourself!
-          </Modal.Title>
+          </div>
           <div className={`dots-container`}>
             {steps.map((e, i) => (
               <div
@@ -132,28 +154,26 @@ const Popup = () => {
               />
             ))}
           </div>
-        </Modal.Header>
+        </div>
 
-        <Modal.Body>
-          <ChoicesContext.Provider value={choices}>
+        <div className="card-body">
             {stepDisplay()}
-          </ChoicesContext.Provider>
-        </Modal.Body>
+        </div>
 
-        <Modal.Footer>
+        <div className="card-footer d-flex justify-content-between">
           <div className="btn-left">
-            <Button text={"BACK"} handleClick={dec} />
+            <Button text={"BACK"} handleClick={prev} />
           </div>
           <div className="d-flex gap-2">
             <Button text={"SKIP"} handleClick={skip} />
             <Button
               text={isLoading ? <Loading /> : "Next"}
-              gray={choices.length > 0}
-              handleClick={inc}
+              active={choices.length > 0}
+              handleClick={next}
             />
           </div>
-        </Modal.Footer>
-      </Modal>
+        </div>
+      </div>
     </div>
   );
 };

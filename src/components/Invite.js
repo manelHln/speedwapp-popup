@@ -1,6 +1,5 @@
 import React from 'react'
 import './invitefriends.css'
-import { bgImg } from "../assets";
 
 const Invite = () => {
   return (

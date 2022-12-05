@@ -21,7 +21,7 @@ const InviteFriends = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        redirect: "follow", 
+        redirect: "follow",
         referrerPolicy: "no-referrer",
         body: JSON.stringify(data),
       });
@@ -86,7 +86,7 @@ const InviteFriends = () => {
       <Modal show={true} size="xl" centered>
         <Modal.Body className="p-0">
           <div className="row p-0 m-0">
-            <div className="col p-0 m-0">
+            <div className="col-6 p-0 m-0">
               <img
                 src={bgImg}
                 alt=""
@@ -94,24 +94,26 @@ const InviteFriends = () => {
                 style={{ objectFit: "cover" }}
               />
             </div>
-            <div className="col">
+            <div className="col-6">
               <div
                 className="row d-flex flex-nowrap"
                 style={{ backgroundColor: "#cbcbcb" }}
               >
-                <div className="p-3 icon-container bg-white">
-                  <img src={Email} alt="" className="icon" />
+                <div className="p-0">
+                  <div className='p-4 bg-white col-3 d-flex justify-content-center'>
+                    <i className="fa-sharp fa-solid fa-envelope fa-2xl"></i>
+                  </div>
                 </div>
               </div>
 
               <div className="row mx-auto mt-3 px-2 pb-5">
                 <div className="d-flex justify-content-center">
                   <div
-                    className="card rounded-1 p-3 text-center"
+                    className="card rounded-1 p-1 text-center"
                     style={{ width: "25rem" }}
                   >
                     <div className="card-body">
-                      <h5 className="card-title fw-bolder fs-5">
+                      <h5 className="card-title fw-bold fs-5">
                         Get $15 for every friend you refer
                       </h5>
                       <p className="card-text fs-6">
@@ -122,13 +124,13 @@ const InviteFriends = () => {
                   </div>
                 </div>
                 <div className="my-3">
-                  <div className="text-start text-success fw-semibold mb-1">
+                  <div className="text-start text-success mb-1">
                     Adress Book
                   </div>
                   <input
                     type="email"
                     name="friendsMails"
-                    className="form-control form-control-lg rounded-1"
+                    className="form-control form-control-lg rounded-1 fs-6"
                     aria-label=".form-control-lg"
                     placeholder="Enter your friends email seperated by commas"
                     value={userInfo.emails}
@@ -143,13 +145,7 @@ const InviteFriends = () => {
                     onChange={handleChange}
                     rows="3"
                   />
-                  <img
-                    src={Reset}
-                    alt=""
-                    className="icon reset-icon"
-                    role="button"
-                    onClick={resetTextarea}
-                  />
+                  <i className="fa-solid fa-rotate text-success reset-icon" role="button" onClick={resetTextarea}></i>
                 </div>
                 <div>
                   <input
@@ -191,14 +187,9 @@ const InviteFriends = () => {
                     {isLoading ? (
                       "..loading"
                     ) : (
-                      <div>
-                        Share with friends
-                        <img
-                          src={ChevronRight}
-                          alt=""
-                          className="ml-2"
-                          style={{ width: "10px", color: "white" }}
-                        />
+                      <div className='d-flex justify-content-center align-items-center'>
+                        <span>Share with friends</span>
+                        <i class="fa-sharp fa-solid fa-chevron-right fs-xs ms-2"></i>
                       </div>
                     )}
                   </button>

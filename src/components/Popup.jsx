@@ -6,7 +6,7 @@ import { Step1, Step2, Step3 } from "./Steps";
 const Button = ({text, handleClick, active}) => {
   return (
     <div className={`default-btn ${active&& 'active-bg'}`} onClick={handleClick}>{text}</div>
-  ) 
+  )
 }
 
 const Popup = () => {
@@ -140,41 +140,39 @@ const Popup = () => {
 
 
   return (
-    <div className="d-flex justify-content-center">
-      <div className="card col-8">
-        <div className="card-header flex-column-reverse align-items-start">
-          <div className="card-title fw-light fs-5 text mt-2">
-            Before you start, tell us more about yourself!
-          </div>
-          <div className={`dots-container`}>
-            {steps.map((e, i) => (
+    <div className="container col-8">
+  <div className="card">
+    <div className="card-content">
+      <div className="card-header flex-column-reverse align-items-start">
+        <div className="card-title fw-light fs-5 text mt-2">Before you start, tell us more about yourself!</div>
+        <div className={`dots-container`}>
+             {steps.map((e, i) => (
               <div
                 className={`dot ${step === i ? "dot-active" : null}`}
                 key={e}
               />
-            ))}
+          ))}
           </div>
-        </div>
-
-        <div className="card-body">
-            {stepDisplay()}
-        </div>
-
-        <div className="card-footer d-flex justify-content-between">
-          <div className="btn-left">
-            <Button text={"BACK"} handleClick={prev} />
-          </div>
-          <div className="d-flex gap-2">
-            <Button text={"SKIP"} handleClick={skip} />
-            <Button
-              text={isLoading ? <Loading /> : "Next"}
-              active={choices.length > 0}
-              handleClick={next}
-            />
-          </div>
-        </div>
+      </div>
+      <div className="card-body">
+        {stepDisplay()}
+      </div>
+      <div className="card-footer d-flex justify-content-between">
+      <div className="btn-left">
+             <Button text={"BACK"} handleClick={prev} />
+           </div>
+           <div className="d-flex gap-2">
+             <Button text={"SKIP"} handleClick={skip} />
+             <Button
+               text={isLoading ? <Loading /> : "Next"}
+               active={choices.length > 0}
+               handleClick={next}
+             />
+           </div>
       </div>
     </div>
+  </div>
+</div>
   );
 };
 

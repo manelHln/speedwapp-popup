@@ -1,6 +1,7 @@
 import InviteFriends from "./components/InviteFriends";
 import Popup from "./components/Popup";
 import Feedback from './components/Feedback'
+import Invite from './components/Invite'
 import { logo } from "./assets";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         {/*<Popup />*/}
          <InviteFriends />
          {/*<Feedback />*/}
+        {/*<Invite />*/}
          {/**/}
       </div>
   );

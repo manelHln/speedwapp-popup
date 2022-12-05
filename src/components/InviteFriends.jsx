@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { bgImg, Email, ChevronRight, Reset } from "../assets";
+import { bgImg } from "../assets";
 import { Modal } from "react-bootstrap";
 import "./invitefriends.css";
 
@@ -7,6 +7,8 @@ const InviteFriends = () => {
   const [userInfo, setUserInfo] = useState({
     emails: "",
     message: "",
+    agree: false,
+    reminder: false
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,6 +56,20 @@ const InviteFriends = () => {
           agree: prev.agree,
           reminder: prev.reminder,
         };
+      } else if (inputName === "reminder") {
+        return {
+          emails: prev.emails,
+          message: prev.message,
+          agree: prev.agree,
+          reminder: !prev.reminder,
+        };
+      } else if (inputName === "agree") {
+        return {
+          emails: prev.emails,
+          message: prev.message,
+          agree: !prev.agree,
+          reminder: prev.reminder,
+        };
       }
     });
   }
@@ -63,6 +79,8 @@ const InviteFriends = () => {
       return {
         emails: prev.emails,
         message: "",
+        agree: prev.agree,
+        reminder: prev.reminder,
       };
     });
   }
@@ -83,7 +101,7 @@ const InviteFriends = () => {
 
   return (
     <div>
-      <Modal show={true} size="xl" centered>
+      <Modal show={true} size="lg" centered>
         <Modal.Body className="p-0">
           <div className="row p-0 m-0">
             <div className="col-6 p-0 m-0">
@@ -109,14 +127,14 @@ const InviteFriends = () => {
               <div className="row mx-auto mt-3 px-2 pb-5">
                 <div className="d-flex justify-content-center">
                   <div
-                    className="card rounded-1 p-1 text-center"
-                    style={{ width: "25rem" }}
+                    className="card rounded-1 text-center"
+                    style={{ width: "18rem" }}
                   >
                     <div className="card-body">
-                      <h5 className="card-title fw-bold fs-5">
+                      <h5 className="card-title fw-bold checkbox-label">
                         Get $15 for every friend you refer
                       </h5>
-                      <p className="card-text fs-6">
+                      <p className="card-text checkbox-label">
                         Your friends get $15 and you get $15 after their first
                         purchase of $50+
                       </p>
@@ -124,13 +142,13 @@ const InviteFriends = () => {
                   </div>
                 </div>
                 <div className="my-3">
-                  <div className="text-start text-success mb-1">
+                  <div className="text-start text-success mb-1 checkbox-label">
                     Adress Book
                   </div>
                   <input
                     type="email"
                     name="friendsMails"
-                    className="form-control form-control-lg rounded-1 fs-6"
+                    className="form-control  rounded-1 checkbox-label"
                     aria-label=".form-control-lg"
                     placeholder="Enter your friends email seperated by commas"
                     value={userInfo.emails}
@@ -153,9 +171,11 @@ const InviteFriends = () => {
                     type="checkbox"
                     name="agree"
                     id="flexCheckDefault"
+                    checked={userInfo.agree}
+                    onChange={handleChange}
                   />
                   <label
-                    className="form-check-label"
+                    className="form-check-label checkbox-label"
                     htmlFor="flexCheckDefault"
                     role="button"
                   >
@@ -168,9 +188,11 @@ const InviteFriends = () => {
                     type="checkbox"
                     name="reminder"
                     id="flexCheckChecked"
+                    checked={userInfo.reminder}
+                    onChange={handleChange}
                   />
                   <label
-                    className="form-check-label"
+                    className="form-check-label checkbox-label"
                     htmlFor="flexCheckChecked"
                     role="button"
                   >
@@ -180,16 +202,16 @@ const InviteFriends = () => {
                 <div className="col-12">
                   <button
                     type="button"
-                    className="btn btn-lg btn-primary rounded-1 w-100"
+                    className="btn btn-primary rounded-1 w-100"
                     onClick={handleSubmit}
                     // disabled
                   >
                     {isLoading ? (
                       "..loading"
                     ) : (
-                      <div className='d-flex justify-content-center align-items-center'>
-                        <span>Share with friends</span>
-                        <i class="fa-sharp fa-solid fa-chevron-right fs-xs ms-2"></i>
+                      <div className='d-flex justify-content-center align-items-baseline'>
+                        <span className='fs-6'>Share with friends</span>
+                        <i className="fa-sharp fa-solid fa-chevron-right fa-xs ms-1"></i>
                       </div>
                     )}
                   </button>

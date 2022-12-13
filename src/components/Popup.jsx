@@ -1,27 +1,35 @@
 import { useState } from "react";
 import { Step1, Step2, Step3 } from "./Steps";
+import Success, { SomethingWrong } from "./Success";
 
-
-
-const Button = ({text, handleClick, active}) => {
+const Button = ({ text, handleClick, active }) => {
   return (
-    <div className={`default-btn ${active&& 'active-bg'}`} onClick={handleClick}>{text}</div>
-  )
-}
+    <div
+      className={`default-btn ${active && "active-bg"}`}
+      onClick={handleClick}
+    >
+      {text}
+    </div>
+  );
+};
 
 const Popup = () => {
   const steps = [Step1, Step2, Step3];
   const [step, setStepState] = useState(0);
   const [choices, setChoices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [display, setDisplay] = useState({
+    popup: "block",
+    success: "none",
+    wrong: "none",
+  });
 
-
-// Spinner effect for the button when sending data
+  // Spinner effect for the button when sending data
   function Loading() {
     return (
       <div>
         <span
-          class="spinner-grow spinner-grow-sm"
+          className="spinner-grow spinner-grow-sm"
           role="status"
           aria-hidden="true"
         ></span>
@@ -29,7 +37,6 @@ const Popup = () => {
       </div>
     );
   }
-
 
   function next() {
     setStepState((curr) => {
@@ -49,7 +56,6 @@ const Popup = () => {
     });
   }
 
-
   async function postData(url = "", data = {}) {
     setIsLoading(true);
     try {
@@ -65,16 +71,28 @@ const Popup = () => {
         referrerPolicy: "no-referrer",
         body: JSON.stringify(data),
       });
-      if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
+      if (response.ok) {
+        setDisplay((prev) => {
+          return {
+            popup: "none",
+            wrong: "none",
+            success: "flex",
+          };
+        });
       }
     } catch (error) {
-      alert(error.message);
+      setDisplay((prev) => {
+        return {
+          popup: "none",
+          wrong: "flex",
+          success: "none",
+        };
+      });
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
   }
-
 
   function skip() {
     setStepState((curr) => {
@@ -85,8 +103,6 @@ const Popup = () => {
     });
   }
 
-
-
   function prev() {
     setStepState((curr) => {
       if (curr <= 0) {
@@ -95,7 +111,6 @@ const Popup = () => {
       return curr - 1;
     });
   }
-
 
   function handleCheckboxChange(e) {
     if (!choices.includes(e.target.value)) {
@@ -108,7 +123,6 @@ const Popup = () => {
       setChoices(newChoices);
     }
   }
-
 
   function handleRadioChange(event) {
     const newChoices = [...choices];
@@ -123,56 +137,80 @@ const Popup = () => {
     setChoices((prev) => [...prev, event.target.value]);
   }
 
+  function handleClose() {
+    setDisplay({
+      popup: "none",
+      wrong: "none",
+      success: "none",
+    });
+  }
 
   const stepDisplay = () => {
     switch (step) {
       case 0:
-        return <Step1 choices={choices} handleCheckboxChange={handleCheckboxChange} />;
+        return (
+          <Step1
+            choices={choices}
+            handleCheckboxChange={handleCheckboxChange}
+          />
+        );
       case 1:
-        return <Step2 choices={choices} handleRadioChange={handleRadioChange} />;
+        return (
+          <Step2 choices={choices} handleRadioChange={handleRadioChange} />
+        );
       case 2:
-        return <Step3 choices={choices} handleCheckboxChange={handleCheckboxChange} />;
+        return (
+          <Step3
+            choices={choices}
+            handleCheckboxChange={handleCheckboxChange}
+          />
+        );
       default:
-        return <Step1 choices={choices} handleCheckboxChange={handleCheckboxChange} />;
+        return (
+          <Step1
+            choices={choices}
+            handleCheckboxChange={handleCheckboxChange}
+          />
+        );
     }
   };
 
-
-
   return (
-    <div className="container col-8">
-  <div className="card">
-    <div className="card-content">
-      <div className="card-header flex-column-reverse align-items-start">
-        <div className="card-title fw-light fs-5 text mt-2">Before you start, tell us more about yourself!</div>
-        <div className={`dots-container`}>
-             {steps.map((e, i) => (
-              <div
-                className={`dot ${step === i ? "dot-active" : null}`}
-                key={e}
-              />
-          ))}
+    <div className={`container col-8`}>
+      <div className={`card d-${display.popup}`}>
+        <div className="card-content">
+          <div className="card-header flex-column-reverse align-items-start">
+            <div className="card-title fw-light fs-5 text mt-2">
+              Before you start, tell us more about yourself!
+            </div>
+            <div className={`dots-container`}>
+              {steps.map((e, i) => (
+                <div
+                  className={`dot ${step === i ? "dot-active" : null}`}
+                  key={e}
+                />
+              ))}
+            </div>
           </div>
+          <div className="card-body">{stepDisplay()}</div>
+          <div className="card-footer d-flex justify-content-between">
+            <div className="btn-left">
+              <Button text={"BACK"} handleClick={prev} />
+            </div>
+            <div className="d-flex gap-2">
+              <Button text={"SKIP"} handleClick={skip} />
+              <Button
+                text={isLoading ? <Loading /> : "Next"}
+                active={choices.length > 0}
+                handleClick={next}
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="card-body">
-        {stepDisplay()}
-      </div>
-      <div className="card-footer d-flex justify-content-between">
-      <div className="btn-left">
-             <Button text={"BACK"} handleClick={prev} />
-           </div>
-           <div className="d-flex gap-2">
-             <Button text={"SKIP"} handleClick={skip} />
-             <Button
-               text={isLoading ? <Loading /> : "Next"}
-               active={choices.length > 0}
-               handleClick={next}
-             />
-           </div>
-      </div>
+      <SomethingWrong display={display.wrong} handleClose={handleClose} />
+      <Success display={display.success} handleClose={handleClose} />
     </div>
-  </div>
-</div>
   );
 };
 

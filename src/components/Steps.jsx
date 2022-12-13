@@ -21,8 +21,8 @@ const questions = [
 ];
 
 
-const ChoiceCard = ({content, handleCheckboxChange, choices}) => {
-  
+export const ChoiceCard = ({content, handleCheckboxChange, choices}) => {
+
   return (
     <label className='choice-card'>
         <input type="checkbox" id={content} checked={choices.includes(content)} value={content} onChange={handleCheckboxChange} />

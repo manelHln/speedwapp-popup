@@ -1,5 +1,5 @@
-import InviteFriends from "./components/InviteFriends";
 import { logo } from "./assets";
+import NotificationBar from './components/NotificationBar'
 
 function App() {
   return (
@@ -7,11 +7,8 @@ function App() {
         <div className="logo p-3">
           <img src={logo} alt="logo_speedwapp" />
         </div>
-        {/*<Popup />*/}
-         <InviteFriends />
-         {/*<Feedback />*/}
-        {/*<Invite />*/}
-         {/**/}
+        {/*<Feedback />*/}
+       <NotificationBar />
       </div>
   );
 }

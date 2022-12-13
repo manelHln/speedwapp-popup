@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { bgImg } from "../assets";
-import { Modal } from "react-bootstrap";
 import "./invitefriends.css";
 
 const InviteFriends = () => {
   const [userInfo, setUserInfo] = useState({
-    emails: "",
+    friendsMails: "",
     message: "",
     agree: false,
     reminder: false
@@ -37,72 +36,37 @@ const InviteFriends = () => {
     }
   }
 
-  function handleChange(event) {
-    const newValue = event.target.value;
-    const inputName = event.target.name;
+  const handleChange = (e) => {
+    const type = e.target.type;
+    const name = e.target.name;
+    const value = type === 'checkbox' ? e.target.checked : e.target.value
 
-    setUserInfo((prev) => {
-      if (inputName === "friendsMails") {
-        return {
-          emails: newValue,
-          message: prev.message,
-          agree: prev.agree,
-          reminder: prev.reminder,
-        };
-      } else if (inputName === "message") {
-        return {
-          emails: prev.emails,
-          message: newValue,
-          agree: prev.agree,
-          reminder: prev.reminder,
-        };
-      } else if (inputName === "reminder") {
-        return {
-          emails: prev.emails,
-          message: prev.message,
-          agree: prev.agree,
-          reminder: !prev.reminder,
-        };
-      } else if (inputName === "agree") {
-        return {
-          emails: prev.emails,
-          message: prev.message,
-          agree: !prev.agree,
-          reminder: prev.reminder,
-        };
-      }
-    });
-  }
+      setUserInfo((prev) => ({ ...prev, [name]: value }));
+  };
 
   function resetTextarea() {
-    setUserInfo((prev) => {
-      return {
-        emails: prev.emails,
-        message: "",
-        agree: prev.agree,
-        reminder: prev.reminder,
-      };
-    });
+    setUserInfo((prev) => ({ ...prev, message: '' }));
   }
 
-  const emailsList = userInfo.emails.split(",");
+  const emailsList = userInfo.friendsMails.split(",");
   const dataToSend = {
     message: userInfo.message,
-    emails: emailsList,
+    friendsMails: emailsList,
   };
 
   function handleSubmit() {
-    postData("https://www.speedwapp.com", JSON.stringify(dataToSend)).then(
-      (data) => {
-        console.log(data);
-      }
-    );
+    // postData("https://www.speedwapp.com", JSON.stringify(dataToSend)).then(
+    //   (data) => {
+    //     console.log(data);
+    //   }
+    // );
+    console.log(dataToSend)
   }
 
   return (
-    <div>
-      <Modal show={true} size="lg" centered>
-        <Modal.Body className="p-0">
+    <div className='container col-8'>
+      <div className='card rounded-0'>
+        <div className="card-content p-0">
           <div className="row p-0 m-0">
             <div className="col-6 p-0 m-0">
               <img
@@ -151,7 +115,7 @@ const InviteFriends = () => {
                     className="form-control  rounded-1 checkbox-label"
                     aria-label=".form-control-lg"
                     placeholder="Enter your friends email seperated by commas"
-                    value={userInfo.emails}
+                    value={userInfo.friendsMails}
                     onChange={handleChange}
                   />
                 </div>
@@ -204,7 +168,7 @@ const InviteFriends = () => {
                     type="button"
                     className="btn btn-primary rounded-1 w-100"
                     onClick={handleSubmit}
-                    // disabled
+                    disabled={!userInfo.agree || !userInfo.reminder}
                   >
                     {isLoading ? (
                       "..loading"
@@ -219,8 +183,8 @@ const InviteFriends = () => {
               </div>
             </div>
           </div>
-        </Modal.Body>
-      </Modal>
+        </div>
+      </div>
     </div>
   );
 };
